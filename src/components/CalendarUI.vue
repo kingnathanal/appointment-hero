@@ -1,37 +1,25 @@
 <template>
-    <div class="card">
-        <div class="card-header bg-light">
-            <div class="row">
-                <div class="col">
-                    <span class="float-left" @click="previous()" ><i class="far fa-arrow-alt-circle-left arrow"></i></span>
-                </div>
-                <div class="col">{{ months[selectedMonth] }}</div>
-                <div class="col">
-                    <span class="float-right" @click="next()"><i class="far fa-arrow-alt-circle-right arrow"></i></span>
-                </div>
-            </div>
-            
-            
-        </div>
-        <div class="card-body"> 
-            <div class="card-group cal-header">
-                <div class="card"><span>Sunday</span></div>
-                <div class="card"><span>Monday</span></div>    
-                <div class="card"><span>Tuesday</span></div>    
-                <div class="card"><span>Wednesday</span></div>    
-                <div class="card"><span>Thursday</span></div>    
-                <div class="card"><span>Friday</span></div> 
-                <div class="card"><span>Saturday</span></div>        
-            </div>    
-            <div class="cal-body">
-
-
-            </div>
-            <div>
-                <div v-for="(week, i) in weeks" :key="i" class="card-group">
-                    <div :id="week">
-            
+    <div class="row">
+        <div class="col">
+            <div class="card rounded-0 shadow-sm">
+                <div class="card-header bg-light">
+                    <div class="row">
+                        <div class="col">
+                            <span class="float-left" @click="previous()" ><i class="far fa-arrow-alt-circle-left arrow"></i></span>
+                        </div>
+                        <div class="col">{{ months[selectedMonth] }} - {{selectedYear}}</div>
+                        <div class="col">
+                            <span class="float-right" @click="next()"><i class="far fa-arrow-alt-circle-right arrow"></i></span>
+                        </div>
                     </div>
+                </div>
+                <div class="card-body"> 
+                    <div class="card-group cal-header">
+                        <div v-for="(day, i) in daysOfTheWeek" :key="i" class="card rounded-0">
+                            <span>{{day}}</span>
+                        </div>      
+                    </div>    
+                    <div class="cal-body"></div>
                 </div>
             </div>
         </div>
@@ -43,25 +31,25 @@ export default {
     name: 'calendarUi',
     data() {
         return {
-            year: 2019,
-            month: 1,
             selectedYear: null,
-            selectedMonth: null,
+            selectedMonth:null,
             selectedDate: null,
             hover: false,
             weeks: 6,
-            weekDays: 7
+            date: 1,
+            firstDayOfTheMonth: (new Date(this.selectedYear,this.selectedMonth)).getDay()
         }
     },
     props: {
         currValues: Object,
         months: Array,
-        selected: Object
+        selectedFromApp: Object,
+        daysOfTheWeek: Array
     },
     methods: {
         createCalendar(month, year) {
             // get first day of the month
-            let firstDay = (new Date(year,month)).getDay();
+            const firstDay = (new Date(year,month)).getDay();
 
             let section = document.querySelector('.cal-body');
             let innerSection = document.createElement('div');
@@ -93,9 +81,9 @@ export default {
                         isNotEmpty = true;
                         let card;
                         if(date === this.currValues.date && month === this.currValues.month && year === this.currValues.year) {
-                            card = this.makeCard(date,'card card-cal-date text-left bg-info text-white p-1');
+                            card = this.makeCard(date,'card card-cal-date text-left bg-info text-white p-1 rounded-0');
                         } else {
-                            card = this.makeCard(date,'card card-cal-date text-left p-1');
+                            card = this.makeCard(date,'card card-cal-date text-left p-1 rounded-0');
                         }
                         row.appendChild(card);
                         date++;
@@ -116,49 +104,64 @@ export default {
             return 32 - new Date(year, month, 32).getDate();
         },
         next() {
-            this.selectedYear = (this.selectedMonth === 11) ? this.selectedYear + 1 : this.selectedYear;
-            this.selectedMonth = (this.selectedMonth + 1) % 12;
-            this.createCalendar(this.selectedMonth, this.selectedYear);
+
+            let year = (this.selectedMonth === 11) ? this.selectedYear + 1 : this.selectedYear;
+            let month = (this.selectedValues.month + 1) % 12;
+            this.selectedValues = {month:month, year:year };
+            this.createCalendar(this.selectedValues.month, this.selectedValues.year);
         },
         previous() {
-            this.selectedYear = (this.selectedMonth === 0) ? this.selectedYear - 1 : this.selectedYear;
-            this.selectedMonth = (this.selectedMonth === 0) ? 11 : this.selectedMonth -1 ;
-            this.createCalendar(this.selectedMonth, this.selectedYear);
+            let year = (this.selectedValues.month === 0) ? this.selectedValues.year - 1 : this.selectedValues.year;
+            let month = (this.selectedValues.month === 0) ? 11 : this.selectedValues.month -1 ;
+            this.selectedValues = {month:month, year:year };
+            this.createCalendar(this.selectedValues.month, this.selectedValues.year);
         },
         jump() {
-            this.selectedYear = 2020;
-            this.selectedMonth = 0;
-            this.createCalendar(this.selectedMonth, this.selectedYear);
-        }
-        ,makeCard(data, style='card card-cal-date p-1') {
+            this.createCalendar(this.selectedValues.month, this.selectedValues.year);
+        },
+        makeCard(data, style='card card-cal-date p-1 rounded-0') {
             let card = document.createElement('div');
             card.className = style;
             let cardBody = `<div class="card-body p-1 text-center">${data}</div>`;
             card.innerHTML = cardBody;
             return card;
         },
-        checkIfCardIsBlack(i,j) {
-            return i === 0 && j < firstDay;
+        makeCardBody(date) {
+            const newData = date;
+            date++;
+            return `${newData}`;
         }
     },
     created() {
-
+      
     },
     mounted() {
-        this.createCalendar(this.selected.month, this.selected.year);
-        this.selectedYear = this.selected.year;
-        this.selectedMonth = this.selected.month;
+        this.selectedValues = {month:this.selectedFromApp.month, year:this.selectedFromApp.year };
     },
     updated() {
-        this.createCalendar(this.selected.month, this.selected.year);
-        console.log('updated!!');
-        //this.selectedYear = this.selected.year;
-        //this.selectedMonth = this.selected.month;
-        //console.log(this.selectedMonth);
+
+    },
+    computed: {
+      selectedValues: {
+          get: function() {
+              return {month:this.selectedMonth, year:this.selectedYear }
+          },
+          set: function (newSelected) {
+              this.selectedYear = newSelected.year;
+              this.selectedMonth = newSelected.month;
+          }
+      },
+      monthDate: function() {
+          return ++this.day;
+      }
     },
     watch: {
-        selectedYear: function() {
-            console.log('from watch: ' + this.selectedYear);
+        selectedValues: function() {
+            this.$emit('selectedValues', {month:this.selectedMonth, year:this.selectedYear });
+            this.jump();
+        },
+        selectedFromApp: function() {
+           this.selectedValues = {month:this.selectedFromApp.month, year:this.selectedFromApp.year };
         }
     }
 }
@@ -169,7 +172,7 @@ export default {
         height:100px;
     }
     .card-group .cal-header .card {
-        padding:2px;
+        
         font-size:8px;
     }
     .card .card-cal-date .card-body {
@@ -179,11 +182,11 @@ export default {
         background-color: #f4f4f4;
     }
     .card-cal-date:hover {
-        background-color: #f4f4f4;
+        background-color: ##333333;
         cursor: pointer;
     }
     .hover {
-        background-color: #f4f4f4;
+        background-color: #333333;
     }
     .nohover {
         background-color: #fff;
@@ -194,4 +197,23 @@ export default {
     .arrow:hover {
         color: orange;
     }
+    @media (max-width:575px) {
+    .display-4 {
+        font-size: 1.5rem;
+    }
+    .day h5 {
+        background-color: #f8f9fa;
+        padding: 3px 5px 5px;
+        margin: -8px -8px 8px -8px;
+    }
+    .date {
+        padding-left: 4px;
+    }
+}
+
+@media (min-width: 576px) {
+    .day {
+        height: 14.2857vw;
+    }
+}
 </style>

@@ -5,12 +5,15 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "deploy": "gh-pages -d dist"
   },
+  "homepage":"https://kingnathanal.github.io/appointment"
   "dependencies": {
     "ajv": "^6.8.1",
     "bootstrap": "^4.2.1",
     "bootstrap-vue": "^2.0.0-rc.11",
+    "gh-pages": "^2.0.1",
     "vue": "^2.5.22"
   },
   "devDependencies": {

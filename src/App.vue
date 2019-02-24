@@ -3,11 +3,20 @@
     <NavBar />
     <b-container fluid>
     <b-row>
-        <b-col col sm="6" md="3" lg="2" xl="2" class="sidebar">
-          <MonthsUI v-bind:months="months" v-bind:currValues="currToday" v-on:selMonth="selMonth"/>
+        <b-col col sm="12" md="12" lg="2" xl="2" class="sidebar">
+          <MonthsUI v-bind:months="months" v-bind:currValues="currToday" v-on:selMonth="selMonth" v-bind:selectedValues="selectedVals"/>
         </b-col>
-        <b-col col sm="7" md="9" lg="10" xl="10" class="p-2">
-          <CalendarUI v-bind:currValues="currToday" v-bind:months="months" v-bind:selected="selected"/>
+        <b-col col sm="12" md="12" lg="9" xl="9" class="p-2">
+          <div class="row">
+            <div class="col text-left">
+              <div class="alert alert-secondary rounded-0 shadow-sm">
+                <button class="btn btn-sm bg-info rounded-0 text-white m-2 shadow-sm">New Appointment</button>
+              </div>
+              
+            </div>
+          </div>
+          <CalendarUI v-bind:currValues="currToday" v-bind:months="months" v-bind:daysOfTheWeek="daysOfTheWeek" v-bind:selectedFromApp="selected" v-on:selectedValues="selectedVal"/>
+          <AppointmentList />
         </b-col>
     </b-row>
     </b-container>
@@ -16,31 +25,36 @@
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+//import HelloWorld from './components/HelloWorld.vue'
 import NavBar from './components/NavBar.vue'
 import MonthsUI from './components/MonthsUI.vue'
 import CalendarUI from './components/CalendarUI.vue'
+import AppointmentList from './components/AppointmentList.vue'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld,
+    //HelloWorld,
     NavBar,
     MonthsUI,
-    CalendarUI
+    CalendarUI,
+    AppointmentList
   },
   data() {
     return {
-      days: ["Sunday", 'Monday', "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      daysOfTheWeek: ["Sunday", 'Monday', "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
       months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
       currToday: null,
-      selected: null
+      selected: null,
+      selectedVals: Object
     }
   },
   methods: {
     selMonth(selected) {
-      //console.log(selected);
       this.selected = selected;
+    },
+    selectedVal(newselected) {
+      this.selectedVals = newselected; 
     }
   },
   created() {
@@ -57,14 +71,17 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-.sidebar {
-  padding: 8px;
-}
+  #app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+  }
+  .sidebar {
+    padding: 8px;
+  }
+  body {
+    background-color:#333333;
+  }
 </style>
