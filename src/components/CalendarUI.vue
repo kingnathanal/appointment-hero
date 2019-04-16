@@ -83,7 +83,7 @@ export default {
                         if(date === this.currValues.date && month === this.currValues.month && year === this.currValues.year) {
                             card = this.makeCard(date,'card card-cal-date text-left bg-info text-white p-1 rounded-0');
                         } else {
-                            card = this.makeCard(date,'card card-cal-date text-left p-1 rounded-0');
+                            card = this.makeCard(date,'card card-cal-date text-left p-1 rounded-0 calday');
                         }
                         row.appendChild(card);
                         date++;
@@ -150,9 +150,6 @@ export default {
               this.selectedYear = newSelected.year;
               this.selectedMonth = newSelected.month;
           }
-      },
-      monthDate: function() {
-          return ++this.day;
       }
     },
     watch: {
@@ -178,12 +175,17 @@ export default {
     .card .card-cal-date .card-body {
         height:100px;
     }
+    .card .calday:hover {
+        background-color: rgb(201, 200, 198); 
+        color: white;
+        font-weight:400;
+        cursor: pointer;
+    }
     .card {
         background-color: #f4f4f4;
     }
     .card-cal-date:hover {
-        background-color: ##333333;
-        cursor: pointer;
+        
     }
     .hover {
         background-color: #333333;

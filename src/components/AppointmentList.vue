@@ -6,7 +6,7 @@
                 <div class="card-body border-0">
                     <div v-for="appointment in appointments" :key="appointment.id" >
                         <p>Appointment With : {{appointment.name}}</p>
-                        <p>Appointment Date: {{appointment.date}} <span class="float-right"> {{appointment.comment}}</span> </p>
+                        <p>Appointment Date: {{appointment.appointmentDate}} <span class="float-right"> {{appointment.comment}}</span> </p>
                         <hr>
                     </div>
                 </div>
@@ -16,12 +16,15 @@
 </template>
 
 <script>
+import axios from 'axios';
+import $ from 'jquery';
+
 export default {
     name: 'appointmentList',
     data() {
         return {
             appointments: [
-                {
+               /* {
                     id: 1,
                     name: 'John Doe',
                     date: '02/02/2019 1:30PM',
@@ -69,9 +72,22 @@ export default {
                         }
                     ]
                 },
-
+                */
             ]
         }
+    },
+    mounted() {
+        //const http = new EasyHTTP;
+        //http.get('localhost:8081/user/1/appointments')
+         ///   .then(data => console.log(data))
+         //   .catch(err => console.log(err));
+
+        axios.get('http://localhost:8081/user/1/appointments')
+        .then(res => { 
+            console.log(res);
+            this.appointments = res.data;
+        })
+        .catch(err => console.log(err));
     }
 }
 </script>

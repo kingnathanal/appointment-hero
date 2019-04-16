@@ -21,7 +21,6 @@
     </b-row>
     </b-container>
   </div>
-
 </template>
 
 <script>
@@ -30,6 +29,7 @@ import NavBar from './components/NavBar.vue'
 import MonthsUI from './components/MonthsUI.vue'
 import CalendarUI from './components/CalendarUI.vue'
 import AppointmentList from './components/AppointmentList.vue'
+import $ from 'jquery'
 
 export default {
   name: 'app',
