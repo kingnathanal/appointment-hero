@@ -34,17 +34,18 @@ const CalendarUI = (() => {
                 outPut += `<li class="list-group-item list-group-item-action">${month}</li>`;
             });
             monthList.innerHTML = outPut;
-        },
-        populateDaysOfTheWeek: days => {
-            let html = ''
-        }   
+        }
+        //,
+       // populateDaysOfTheWeek: days => {
+       //     let html = ''
+        //}   
     }
 
 })();
 
 const app = ((DateCtrl, CalendarUI) => {
 
-    const inputValue = document.querySelector('.testInput');
+    //const inputValue = document.querySelector('.testInput');
     //const inputValue = $$('.testInput');
     //console.log(inputValue);
     return {

@@ -45,16 +45,16 @@
     }
 
     // make an http delete request
-    async delete(url,data) {
-        const response = await fetch(url, {
-            method: 'DELETE',
-            headers: {
-                'content-type': 'application/json'
-            }
-        });
-        const resData = await 'Resource Deleted!!';
-        return resData;
-    }
+    //async delete(url,data) {
+    //    const response = await fetch(url, {
+   //         method: 'DELETE',
+     //       headers: {
+    //            'content-type': 'application/json'
+    //        }
+    //    });
+    //    const resData = await 'Resource Deleted!!';
+    //    return resData;
+    //}
  }
 
  export default EasyHTTP

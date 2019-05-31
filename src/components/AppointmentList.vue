@@ -17,7 +17,7 @@
 
 <script>
 import axios from 'axios';
-import $ from 'jquery';
+//import $ from 'jquery';
 
 export default {
     name: 'appointmentList',
@@ -82,12 +82,12 @@ export default {
          ///   .then(data => console.log(data))
          //   .catch(err => console.log(err));
 
-        axios.get('http://localhost:8081/user/1/appointments')
+        axios.get('http://localhost:8082/user/1/appointments')
         .then(res => { 
-            console.log(res);
+            //console.log(res);
             this.appointments = res.data;
         })
-        .catch(err => console.log(err));
+        .catch();
     }
 }
 </script>
