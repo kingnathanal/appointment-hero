@@ -43,7 +43,7 @@ export default {
   }
 };
 
-console.log("JUMP");
+//console.log("JUMP");
 </script>
 
 <style>
